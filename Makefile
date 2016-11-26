@@ -1,19 +1,19 @@
-OBJECTS = memory_system.o riscv_instruction.o execute.o debug.o
-COMPILEFLAGS = -lm -fno-stack-protector
-
+OBJECTS = memory_system.o riscv_instruction.o execute.o debug.o memory.o cache.o
+COMPILEFLAGS = -std=c99 -lm -fno-stack-protector -fpermissive
+CC = g++
 simulator : $(OBJECTS)
-	gcc -std=c99 -o simulator $(OBJECTS) $(COMPILEFLAGS)
-
+	$(CC) -o simulator $(OBJECTS) $(COMPILEFLAGS)
 
 memory_system.o : memory_system.c memory_system.h
-	gcc -c memory_system.c $(COMPILEFLAGS)
+	$(CC) -c memory_system.c $(COMPILEFLAGS)
 riscv_instruction.o : riscv_instruction.c riscv_instruction.h
-	gcc -c riscv_instruction.c $(COMPILEFLAGS)
+	$(CC) -c riscv_instruction.c $(COMPILEFLAGS)
 execute.o : execute.c execute.h
-	gcc -c execute.c $(COMPILEFLAGS)
+	$(CC) -c execute.c $(COMPILEFLAGS)
 debug.o : debug.c debug.h
-	gcc -c debug.c $(COMPILEFLAGS)
+	$(CC) -c debug.c $(COMPILEFLAGS)
+cache.o: cache.h def.h
+memory.o: memory.h
 
 clean :
 	    rm simulator $(OBJECTS)
-

@@ -1,0 +1,2 @@
+g++ -c execute.c -std=c99 -lm -fno-stack-protector
+Makefile:12: recipe for target 'execute.o' failed

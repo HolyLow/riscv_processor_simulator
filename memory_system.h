@@ -4,20 +4,22 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include "memory.h"
+#include "cache.h"
 
 typedef unsigned char      reg8;
 typedef unsigned short int reg16;
 typedef unsigned int       reg32;
 typedef unsigned long int  reg64;
 
-typedef unsigned char bool;
+// typedef unsigned char bool;
 typedef unsigned char byte;
 typedef unsigned int instruction;
 
 #define FALSE 0
 #define TRUE  1
 
-// abi 
+// abi
 #define zero x[0]    // Hard-wired zero
 #define ra   x[1]    // return address
 #define sp   x[2]    // stack pointer
@@ -54,7 +56,7 @@ typedef unsigned int instruction;
 
 // memory size 128Mb
 #define MEM_SIZE 1<<27           // 0x0800 0000
-#define STACK_BOTTOM 0x6000000   // virtual address of stack 
+#define STACK_BOTTOM 0x6000000   // virtual address of stack
 #define TRUE 1
 #define FALSE 0
 
@@ -103,7 +105,7 @@ typedef struct riscv64_memory{
 	long int mem_size;
 	byte *memory;
 	byte *stack_bottom;
-	// top of the heap 
+	// top of the heap
 	byte* edata;
 
 } Riscv64_memory;
@@ -118,7 +120,9 @@ typedef struct riscv64_memory{
 void init_decoder(Riscv64_decoder**);
 void init_memory(Riscv64_memory**);
 void init_register(Riscv64_register**, Riscv64_memory*);
-void delete_memory_system(Riscv64_decoder*, Riscv64_register*, Riscv64_memory*); // free the memory 
+void init_cache_simulator();
+void cachesimulator_output();
+void delete_memory_system(Riscv64_decoder*, Riscv64_register*, Riscv64_memory*); // free the memory
 
 /*********************************************/
 /*                                           */
@@ -139,7 +143,7 @@ void decode_instruction(Riscv64_decoder*);
 byte* get_actual_addr(Riscv64_memory*, byte* virtual_addr); // return the actual addr in this machine
 byte* get_virtual_addr(Riscv64_memory*, byte* actual_addr); // invese function of the function above
 bool out_of_memory_virtual(Riscv64_memory*, byte* virtual_addr);
-bool out_of_memory_actual(Riscv64_memory*, byte* actual_addr); // judge if the actual address is out of virtual memory  
+bool out_of_memory_actual(Riscv64_memory*, byte* actual_addr); // judge if the actual address is out of virtual memory
 void check_valid_memory_virtual(Riscv64_memory*, byte* virtual_addr); // check if the virtual memory is valid, if not exit(1)
 
 /* note: the only way to access memory is through vitual_addr */

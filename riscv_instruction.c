@@ -1,12 +1,12 @@
 /*******************************************************************/
-/* To make it easy to add a new instruction, we define and write   */
+/* To make it easy to add a new instruction, we define AND write   */
 /* all the codes about instructions in file "riscv_instruction.h"  */
-/* for definition, and in file "riscv_instruction.c" for           */
+/* for definition, AND in file "riscv_instruction.c" for           */
 /* implementation. If you want to add a new instruction to our     */
 /* simulator, you could just simply follow the steps below:        */
 /*                                                                 */
 /*  1. Add the opcode of your new instruction(maybe your funct3    */
-/*     and funct7 as well, if there are any conflict with current  */
+/*     AND funct7 as well, if there are any conflict with current  */
 /*     opcodes) to the appropriate place(according to your         */
 /*     instruction type) in the function GetINSTYPE in             */
 /*     "riscv_instruction.c";                                      */
@@ -14,16 +14,16 @@
 /*     according to your instruction type. For example, if your    */
 /*     instruction is R_TYPE, then your are welcome to the         */
 /*     function R_Execute. You should add your entrance according  */
-/*     to your opcode, funct3, and maybe funct7 as well;           */
+/*     to your opcode, funct3, AND maybe funct7 as well;           */
 /*  3. Add the definition of your instruction to                   */
-/*     "riscv_instruction.h", and your implementation to           */
+/*     "riscv_instruction.h", AND your implementation to           */
 /*     "riscv_instruction.c".                                      */
 /* If you take the steps above correctly, your new instruction     */
 /* will work!                                                      */
 /*******************************************************************/
 #include "riscv_instruction.h"
 
-// something for debug 
+// something for debug
 extern bool debug_flag;
 extern unsigned long int pause_addr;
 
@@ -200,7 +200,7 @@ void R_execute(Riscv64_decoder* riscv_decoder, Riscv64_register* riscv_register,
 					switch (riscv_decoder->funct7)
 					{
 						case 0x00: // b0000000
-							xor(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
+							XOR(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
 							#ifdef DEBUG
 							DEBUG_INST("xor", "d12", riscv_decoder, riscv_register);
 							#endif
@@ -244,7 +244,7 @@ void R_execute(Riscv64_decoder* riscv_decoder, Riscv64_register* riscv_register,
 					switch (riscv_decoder->funct7)
 					{
 						case 0x00: // b0000000
-							or(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
+							OR(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
 							#ifdef DEBUG
 							DEBUG_INST("or", "d12", riscv_decoder, riscv_register);
 							#endif
@@ -263,9 +263,9 @@ void R_execute(Riscv64_decoder* riscv_decoder, Riscv64_register* riscv_register,
 					switch (riscv_decoder->funct7)
 					{
 						case 0x00: // b0000000
-							and(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
+							AND(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->rs2);
 							#ifdef DEBUG
-							DEBUG_INST("and", "d12", riscv_decoder, riscv_register);
+							DEBUG_INST("AND", "d12", riscv_decoder, riscv_register);
 							#endif
 							break;
 						case 0x01: // b0000001
@@ -726,9 +726,9 @@ void I_execute(Riscv64_decoder* riscv_decoder, Riscv64_register* riscv_register,
 					#endif
 					break;
 				case 7: // b111
-					andi(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->I_immediate);
+					ANDi(riscv_register, riscv_decoder->rd, riscv_decoder->rs1, riscv_decoder->I_immediate);
 					#ifdef DEBUG
-					DEBUG_INST("andi", "d1i", riscv_decoder, riscv_register);
+					DEBUG_INST("ANDi", "d1i", riscv_decoder, riscv_register);
 					#endif
 					break;
 				default:
@@ -899,7 +899,7 @@ void UJ_execute(Riscv64_decoder* riscv_decoder, Riscv64_register* riscv_register
 /* functions for instructions  RV32I base    */
 /*                                           */
 /*********************************************/
-/* @param rd,rs1,rs2 stand for the index of a register */
+/* @param rd,rs1,rs2 stAND for the index of a register */
 
 /* Loads */
 void lb(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory, int rd, int rs1, int imm)  // byte
@@ -979,7 +979,7 @@ void auipc(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory, int r
 }
 
 /* Logical */
-void xor(Riscv64_register* riscv_register, int rd, int rs1, int rs2)        // xor
+void XOR(Riscv64_register* riscv_register, int rd, int rs1, int rs2)        // xor
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] ^ riscv_register->x[rs2];
 }
@@ -987,7 +987,7 @@ void xori(Riscv64_register* riscv_register, int rd, int rs1, int imm)       // x
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] ^ (long int)imm;
 }
-void or(Riscv64_register* riscv_register, int rd, int rs1, int rs2)         // or
+void OR(Riscv64_register* riscv_register, int rd, int rs1, int rs2)         // or
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] | riscv_register->x[rs2];
 }
@@ -995,11 +995,11 @@ void ori(Riscv64_register* riscv_register, int rd, int rs1, int imm)        // o
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] | (long int)imm;
 }
-void and(Riscv64_register* riscv_register, int rd, int rs1, int rs2)        // and
+void AND(Riscv64_register* riscv_register, int rd, int rs1, int rs2)        // AND
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] & riscv_register->x[rs2];
 }
-void andi(Riscv64_register* riscv_register, int rd, int rs1, int imm)       // and immediate
+void ANDi(Riscv64_register* riscv_register, int rd, int rs1, int imm)       // AND immediate
 {
 	riscv_register->x[rd] = riscv_register->x[rs1] & (long int)imm;
 }
@@ -1211,7 +1211,7 @@ void mulhsu(Riscv64_register* riscv_register, int rd, int rs1, int rs2) // unsig
 }
 void mulhu(Riscv64_register* riscv_register, int rd, int rs1, int rs2)  // signed *unsigned  high
 {
-	int value_rs1 = (int)get_register_general(riscv_register, rs1); // multiplicand
+	int value_rs1 = (int)get_register_general(riscv_register, rs1); // multiplicAND
 	unsigned int value_rs2 = (unsigned int)get_register_general(riscv_register, rs2); // multiplier
 	long long result = (long long)value_rs1 * (unsigned long long)value_rs2;
 	result >>= 32;

@@ -1,12 +1,12 @@
 /*******************************************************************/
-/* To make it easy to add a new instruction, we define and write   */
+/* To make it easy to add a new instruction, we define AND write   */
 /* all the codes about instructions in file "riscv_instruction.h"  */
-/* for definition, and in file "riscv_instruction.c" for           */
+/* for definition, AND in file "riscv_instruction.c" for           */
 /* implementation. If you want to add a new instruction to our     */
 /* simulator, you could just simply follow the steps below:        */
 /*                                                                 */
 /*  1. Add the opcode of your new instruction(maybe your funct3    */
-/*     and funct7 as well, if there are any conflict with current  */
+/*     AND funct7 as well, if there are any conflict with current  */
 /*     opcodes) to the appropriate place(according to your         */
 /*     instruction type) in the function GetINSTYPE in             */
 /*     "riscv_instruction.c";                                      */
@@ -14,9 +14,9 @@
 /*     according to your instruction type. For example, if your    */
 /*     instruction is R_TYPE, then your are welcome to the         */
 /*     function R_Execute. You should add your entrance according  */
-/*     to your opcode, funct3, and maybe funct7 as well;           */
+/*     to your opcode, funct3, AND maybe funct7 as well;           */
 /*  3. Add the definition of your instruction to                   */
-/*     "riscv_instruction.h", and your implementation to           */
+/*     "riscv_instruction.h", AND your implementation to           */
 /*     "riscv_instruction.c".                                      */
 /* If you take the steps above correctly, your new instruction     */
 /* will work!                                                      */
@@ -125,7 +125,7 @@ void UJ_execute(Riscv64_decoder*, Riscv64_register*, Riscv64_memory*);
 /* functions for instructions  RV32I base    */
 /*                                           */
 /*********************************************/
-/* @param rd,rrs1,rrs2 stand for the index of a register */
+/* @param rd,rrs1,rrs2 stAND for the index of a register */
 
 /* Loads */
 void lb(Riscv64_register*, Riscv64_memory*, int rd, int rs1, int imm);  // byte
@@ -147,12 +147,12 @@ void lui(Riscv64_register*, Riscv64_memory*, int rd, int imm);       // load upp
 void auipc(Riscv64_register*, Riscv64_memory*, int rd, int imm);     // add upper immediate to pc
 
 /* Logical */
-void xor(Riscv64_register*, int rd, int rs1, int rs2);        // xor
+void XOR(Riscv64_register*, int rd, int rs1, int rs2);        // xor
 void xori(Riscv64_register*, int rd, int rs1, int imm);       // xor immediate
-void or(Riscv64_register*, int rd, int rs1, int rs2);         // or
+void OR(Riscv64_register*, int rd, int rs1, int rs2);         // or
 void ori(Riscv64_register*, int rd, int rs1, int imm);        // or immediate
-void and(Riscv64_register*, int rd, int rs1, int rs2);        // and
-void andi(Riscv64_register*, int rd, int rs1, int imm);       // and immediate
+void AND(Riscv64_register*, int rd, int rs1, int rs2);        // AND
+void ANDi(Riscv64_register*, int rd, int rs1, int imm);       // AND immediate
 
 /* Shifts */
 void sll(Riscv64_register*, int rd, int rs1, int rs2);         // shift left
@@ -320,4 +320,3 @@ void flt_D(Riscv64_register*, int rd, int rs1, int rs2); // <
 void fle_D(Riscv64_register*, int rd, int rs1, int rs2); // <=
 
 #endif
-

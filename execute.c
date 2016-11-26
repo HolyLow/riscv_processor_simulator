@@ -21,13 +21,18 @@
 /* If you take the steps above correctly, your new instruction     */
 /* will work!                                                      */
 /*******************************************************************/
-#include "execute.h"
 
+#include "execute.h"
+#include "cache.h"
+
+extern Memory m;
+extern Cache* l;
 extern int EXIT_HAPPENED;
 
 // something for debug
 extern bool debug_flag;
 extern unsigned long int pause_addr;
+
 
 /*********************************************/
 /*                                           */
@@ -147,9 +152,11 @@ void load_program(Elf64_Ehdr* elf_header, Riscv64_register* riscv_register, Risc
 		//printf("the name of symbol is : %s\n", string_table + symbol_table->st_name);
 
 		// get edata (for heap)
-		if(strcmp(string_table+symbol_table->st_name, "_edata") == 0)
+		const char* ch_tmp = string_table+symbol_table->st_name;
+		if(strcmp(ch_tmp, "_edata") == 0)
+		// if(strcmp(string_table+symbol_table->st_name, "_edata") == 0)
 		{
-			riscv_memory->edata = symbol_table->st_value;
+			riscv_memory->edata = (byte*)symbol_table->st_value;
 		}
 	}
 
@@ -174,7 +181,7 @@ instruction fetch(Riscv64_memory* riscv_memory, Riscv64_register* riscv_register
 	#endif
 
 	//check whether to debug
-	if((int)virtual_addr_pc == (int)pause_addr)
+	if((long)virtual_addr_pc == (long)pause_addr)
 	{
 		debug_flag = TRUE;
 	}
@@ -230,7 +237,7 @@ void decode(Riscv64_decoder* riscv_decoder, instruction inst)
 		default:
 			printf("error: OPCODE not defined!\n");
 			Error_NoDef(riscv_decoder);
-	}	
+	}
 
 	return;
 }
@@ -300,8 +307,9 @@ int main(int argc, char const *argv[])
 	// execute elf one by one
 	for (int i = 1; i <= file_num; i++ )
 	{
-		char *file_name = argv[i];
-
+		// char *file_name = argv[i];
+		char *file_name;
+		strcpy(file_name, argv[i]);
 		// not absolute addr, add "./" to the head of the str
 		char pre_addr[3] = "./";
 		if(file_name[0] != '/')
@@ -336,6 +344,7 @@ int main(int argc, char const *argv[])
 		init_decoder(&riscv_decoder);
 		init_memory(&riscv_memory);
 		init_register(&riscv_register, riscv_memory);
+		init_cache_simulator();
 
 
 		//load program
@@ -351,7 +360,7 @@ int main(int argc, char const *argv[])
 			// debug mode
 			if(debug_flag == TRUE)
 			{
-				DEBUG_MODE(riscv_register, riscv_memory);
+				MY_DEBUG_MODE(riscv_register, riscv_memory);
 			}
 		}
 
@@ -359,6 +368,7 @@ int main(int argc, char const *argv[])
 		// gc
 		delete_memory_system(riscv_decoder, riscv_register, riscv_memory);
 		free(buffer);
+		cachesimulator_output();
 	}
 
 	return 0;

@@ -7,16 +7,16 @@ unsigned long int pause_addr = -1;
 
 // void DEBUG(char* p1, ...)
 // {
-// 	va_list va;  
-//     va_start(va, p1); // init va, pointing to the first argument  
-//     int tmp,smax=-1;  
-//     int i;  
-//     for(i = 0;i<n;i++)  
-//         {  
-//                 tmp=va_arg(va,int); // get the next argument, the type is int  
-//                 if(tmp>smax) smax=tmp;  
-//         }  
-//         va_end(va); 
+// 	va_list va;
+//     va_start(va, p1); // init va, pointing to the first argument
+//     int tmp,smax=-1;
+//     int i;
+//     for(i = 0;i<n;i++)
+//         {
+//                 tmp=va_arg(va,int); // get the next argument, the type is int
+//                 if(tmp>smax) smax=tmp;
+//         }
+//         va_end(va);
 // }
 void DEBUG_MESSAGE(char* message)
 {
@@ -57,10 +57,10 @@ void DEBUG_INST(char* inst_name, char* type, Riscv64_decoder* riscv_decoder, Ris
 	printf("\n");
 }
 
-void DEBUG_MODE(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory)
+void MY_DEBUG_MODE(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory)
 {
 	char command[30];
-	
+
 	while(1)
 	{
 		printf("Please enter command (enter 'help' for help):\n");
@@ -86,7 +86,7 @@ void DEBUG_MODE(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory)
 		}
 		// run till end
 		else if(strcmp(command, "rtn") == 0)
-		{	
+		{
 			debug_flag = FALSE;
 			pause_addr = -1;
 			break;
@@ -95,12 +95,12 @@ void DEBUG_MODE(Riscv64_register* riscv_register, Riscv64_memory* riscv_memory)
 		else if(strcmp(command, "n") == 0)
 		{
 			break;
-		}	
+		}
 		else if(strcmp(command, "reg") == 0)
 		{
 			DEBUG_SHOW_REG_GENERAL(riscv_register);
 		}
-		else 
+		else
 		{
 			printf("invalid command!\n");
 		}
